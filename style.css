@@ -252,9 +252,9 @@ transform: translateY(0);
     width: 6px;
 }
 .messages-area::-webkit-scrollbar-track {
-    background: #cfdde8;
+    background: #e8e8cf;
 }
 .messages-area::-webkit-scrollbar-thumb {
-    background: #2c6b9e;
+    background: #aca903;
     border-radius: 10px;
 }
