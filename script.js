@@ -1,13 +1,12 @@
     // firebase config
     const firebaseConfig = {
-        apiKey: "AIzaSyDmxtpb_KNk7wNsNGEone8MAzX5r-gm8Pw",
-        authDomain: "kuzbas-a05e3.firebaseapp.com",
-        databaseURL: "https://kuzbas-a05e3-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "kuzbas-a05e3",
-        storageBucket: "kuzbas-a05e3.firebasestorage.app",
-        messagingSenderId: "232374292596",
-        appId: "1:232374292596:web:37fcde3e6a3c483c298121",
-        measurementId: "G-1HP6FS643S"
+        apiKey: "AIzaSyBAxHfNFTCCZUOwuHemlGeJeoQLK6Af4d8",
+        authDomain: "pivas-chat.firebaseapp.com",
+        databaseURL: "https://pivas-chat-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "pivas-chat",
+        storageBucket: "pivas-chat.firebasestorage.app",
+        messagingSenderId: "735154795152",
+        appId: "1:735154795152:web:4ab51b3d7c0d795469de15"
     };
 
     // inicialisation
