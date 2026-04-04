@@ -28,7 +28,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    margin-bottom: 32px;
+    margin-bottom: 64px;
 }
 .chat-header {
     background: #000000;
