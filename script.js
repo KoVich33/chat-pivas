@@ -130,7 +130,7 @@
         appContainer.innerHTML = `
             <div class="chat-container">
                 <div class="chat-header">
-                    <img src="favicon/favicon-96x96.png" width="32px">
+                    <img src="favicon/favicon-96x96.png" class="icon">
                     <h2>Подпивасники</h2>
                     <div class="user-info">
                         <span class="status-badge"></span>
@@ -170,7 +170,7 @@
             
             // Отключаем кнопку на время отправки
             sendBtn.disabled = true;
-            sendBtn.textContent = '⏳ Отправка...';
+            sendBtn.textContent = 'Отправка...';
             
             try {
                 const newMessageRef = messagesRef.push();
