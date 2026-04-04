@@ -267,3 +267,92 @@ transform: translateY(0);
     background: #aca903;
     border-radius: 10px;
 }
+::selection{
+    background-color: rgb(255, 238, 80);
+    color: black;
+}
+/* BBCode стили */
+.bb-quote {
+    background: #f0f0f0;
+    border-left: 3px solid #4CAF50;
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 4px;
+    font-style: italic;
+}
+
+.bb-code {
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+.bb-code code {
+    background: none;
+    color: inherit;
+}
+
+.bb-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 5px 0;
+}
+
+.bb-gif {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    margin: 5px 0;
+}
+
+/* Улучшенный input для сообщений */
+#messageInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+
+#messageInput:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+
+
+/* bbcode */
+.message-bubble strong {
+    font-weight: bold;
+}
+
+.message-bubble em {
+    font-style: italic;
+}
+
+.message-bubble u {
+    text-decoration: underline;
+}
+
+.message-bubble del {
+    text-decoration: line-through;
+}
+
+.message-bubble a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.message-bubble a:hover {
+    text-decoration: underline;
+}
