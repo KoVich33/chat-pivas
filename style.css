@@ -28,6 +28,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    margin-bottom: 32px;
 }
 .chat-header {
     background: #000000;
@@ -312,7 +313,6 @@ transform: translateY(0);
     margin: 5px 0;
 }
 
-/* Улучшенный input для сообщений */
 #messageInput {
     width: 100%;
     padding: 10px;
