@@ -69,7 +69,12 @@ function parseBBCode(text) {
     
     // gif
     html = html.replace(/\[gif\](https?:\/\/[^\s]+\.gif)\[\/gif\]/gis, '<img src="$1" class="bb-gif" loading="lazy" alt="gif">');
-    
+
+    //vid
+    html = html.replace(/\[vid\](https?:\/\/[^\s]+?)\[\/vid\]/gis, (match, url) => {
+        return createVideoPreview(url);
+    });
+
     return html;
 }
 
@@ -362,6 +367,111 @@ function renderChat() {
         }
     });
 }
+
+// video
+function createVideoPreview(url) {
+    if (!url) return '';
+
+    const isYouTube = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/);
+    const isVimeo = url.match(/vimeo\.com\/(\d+)/);
+    const isDirectVideo = url.match(/\.(mp4|webm|ogg|mov|avi|mkv)(\?|$)/i);
+    
+    const videoId = isYouTube ? isYouTube[1] : (isVimeo ? isVimeo[1] : null);
+    const uniqueId = 'video_' + Math.random().toString(36).substr(2, 9);
+    
+    let embedUrl = '';
+    let thumbnailUrl = '';
+    
+    // preview
+    if (isYouTube) {
+        embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}`;
+        thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    } else if (isVimeo) {
+        embedUrl = `https://player.vimeo.com/video/${videoId}`;
+        thumbnailUrl = `https://vumbnail.com/${videoId}.jpg`;
+    } else if (isDirectVideo) {
+        embedUrl = url;
+        thumbnailUrl = 'https://pivas.fun/static/video-placeholder.svg';
+    }
+    
+    return `
+        <div class="video-container" data-video-url="${escapeHtml(embedUrl)}" data-video-id="${uniqueId}">
+            <div class="video-preview" id="preview_${uniqueId}" onclick="loadVideo('${uniqueId}', '${escapeHtml(embedUrl)}', ${!!isYouTube}, ${!!isVimeo})">
+                <img class="video-thumbnail" src="${thumbnailUrl}" alt="Видео превью" loading="lazy">
+                <div class="video-play-button">▶</div>
+                <div class="video-overlay"></div>
+            </div>
+            <div class="video-player-wrapper" id="player_${uniqueId}" style="display: none;">
+                <div class="video-loader">⏳ Загрузка видео...</div>
+            </div>
+        </div>
+    `;
+}
+
+
+window.loadVideo = function(uniqueId, videoUrl, isYouTube, isVimeo) {
+    const previewDiv = document.getElementById(`preview_${uniqueId}`);
+    const playerWrapper = document.getElementById(`player_${uniqueId}`);
+    
+    if (!previewDiv || !playerWrapper) return;
+    
+
+    previewDiv.style.display = 'none';
+    playerWrapper.style.display = 'block';
+    
+    let embedHtml = '';
+    
+    if (isYouTube) {
+
+        let videoId = videoUrl;
+        if (videoUrl.includes('youtube-nocookie.com/embed/')) {
+            videoId = videoUrl.split('/embed/')[1].split('?')[0];
+        } else if (videoUrl.includes('youtu.be/')) {
+            videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+        } else if (videoUrl.includes('watch?v=')) {
+            videoId = videoUrl.split('v=')[1].split('&')[0];
+        } else {
+            videoId = videoUrl;
+        }
+        
+        embedHtml = `
+            <iframe 
+                src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        `;
+    } else if (isVimeo) {
+        let vimeoId = videoUrl;
+        if (videoUrl.includes('player.vimeo.com/video/')) {
+            vimeoId = videoUrl.split('/video/')[1].split('?')[0];
+        } else if (videoUrl.includes('vimeo.com/')) {
+            vimeoId = videoUrl.split('vimeo.com/')[1].split('?')[0];
+        } else {
+            vimeoId = videoUrl;
+        }
+
+        embedHtml = `
+            <iframe 
+                src="https://player.vimeo.com/video/${vimeoId}?autoplay=1&title=0&byline=0&portrait=0" 
+                frameborder="0" 
+                allow="autoplay; fullscreen; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        `;
+    } else {
+
+        embedHtml = `
+            <video controls autoplay preload="metadata">
+                <source src="${videoUrl}" type="video/mp4">
+                Ваш браузер не поддерживает видео тег.
+            </video>
+        `;
+    }
+    
+    playerWrapper.innerHTML = embedHtml;
+};
 
 function escapeHtml(str) {
     if (!str) return '';
