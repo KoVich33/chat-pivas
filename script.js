@@ -107,11 +107,11 @@ function formatMessageDate(timestamp) {
     const timeStr = msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     if (msgDateOnly.getTime() === todayOnly.getTime()) {
-        return timeStr; // сегодня
+        return timeStr;
     }
 
     if (msgDateOnly.getTime() === yesterdayOnly.getTime()) {
-        return `Вчера ${timeStr}`; // вчера
+        return `Вчера ${timeStr}`;
     }
 
     const month = msgDate.getMonth() + 1;
@@ -123,8 +123,7 @@ function formatMessageDate(timestamp) {
         return `${day}/${month} ${timeStr}`;
     }
 
-    const shortYear = year.toString().slice(-2);
-    return `${day}/${month}/${shortYear} ${timeStr}`;
+    return `${day}/${month}/${year} ${timeStr}`;
 }
 
 function renderAuth() {
