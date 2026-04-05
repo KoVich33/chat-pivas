@@ -38,7 +38,7 @@ body {
     justify-content: space-between;
     align-items: baseline;
     flex-wrap: wrap;
-    border-bottom: 1px solid #aaa341;
+    border-bottom: 2px solid #aaa341;
 }
 .chat-header h2 {
     font-weight: 600;
@@ -50,6 +50,28 @@ body {
     font-family: "Ruslan Display", sans-serif;
     font-style: normal;
 }
+
+.chat-container h3 {
+    font-size: 1rem;
+    background: #fffc54;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-style: normal;
+    padding: 15px;
+    border-top: 1px solid #d3c500;
+}
+.chat-container h2 {
+    font-size: 2rem;
+    background: #fffc54;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-family: "Ruslan Display", sans-serif;
+    font-style: normal;
+    padding: 15px;
+}
+
 .icon {
     width: 32px;
 }
@@ -273,6 +295,9 @@ transform: translateY(0);
     color: black;
 }
 
+.settings-btn {
+    width: 32px;
+}
 
 /* bbcode */
 .bb-quote {
@@ -355,6 +380,7 @@ transform: translateY(0);
 .message-bubble a:hover {
     text-decoration: underline;
 }
+
 
 
 /* Videoplayer */
