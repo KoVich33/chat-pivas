@@ -20,6 +20,9 @@ body {
     bottom: 0;
     overflow: hidden;
 }
+a {
+    color: #d3c500;
+}
 .chat-container {
     background: rgba(30, 40, 50, 0.85);
     width: 95vw;
