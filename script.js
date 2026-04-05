@@ -22,7 +22,7 @@ let messagesListener = null;
 
 const appContainer = document.getElementById('app');
 
-// Функция для экранирования regex спецсимволов
+// BBcode
 function escapeRegex(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -79,6 +79,52 @@ function render() {
     } else {
         renderAuth();
     }
+}
+
+// Date format
+function formatMessageDate(timestamp) {
+    if (!timestamp) return 'только что';
+
+    let milliseconds = timestamp;
+    if (timestamp < 10000000000) {
+        milliseconds = timestamp * 1000;
+    }
+    
+    const msgDate = new Date(milliseconds);
+
+    if (isNaN(msgDate.getTime())) {
+        console.error('Invalid timestamp:', timestamp);
+        return 'неверная дата';
+    }
+    
+    const now = new Date();
+
+    const msgDateOnly = new Date(msgDate.getFullYear(), msgDate.getMonth(), msgDate.getDate());
+    const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterdayOnly = new Date(todayOnly);
+    yesterdayOnly.setDate(yesterdayOnly.getDate() - 1);
+
+    const timeStr = msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    if (msgDateOnly.getTime() === todayOnly.getTime()) {
+        return timeStr; // сегодня
+    }
+
+    if (msgDateOnly.getTime() === yesterdayOnly.getTime()) {
+        return `Вчера ${timeStr}`; // вчера
+    }
+
+    const month = msgDate.getMonth() + 1;
+    const day = msgDate.getDate();
+    const year = msgDate.getFullYear();
+    const currentYear = now.getFullYear();
+
+    if (year === currentYear) {
+        return `${day}/${month} ${timeStr}`;
+    }
+
+    const shortYear = year.toString().slice(-2);
+    return `${day}/${month}/${shortYear} ${timeStr}`;
 }
 
 function renderAuth() {
@@ -203,8 +249,7 @@ function renderChat() {
     const messageInput = document.getElementById('messageInput');
     const sendBtn = document.getElementById('sendBtn');
     const logoutBtn = document.getElementById('logoutBtn');
-    
-    // Отправка сообщения с улучшенной обработкой ошибок
+
     async function sendMessage() {
         const text = messageInput.value.trim();
         if (!text) {
@@ -218,8 +263,7 @@ function renderChat() {
             console.error('No user logged in');
             return;
         }
-        
-        // Отключаем кнопку на время отправки
+
         sendBtn.disabled = true;
         sendBtn.textContent = 'Отправка...';
         
@@ -291,11 +335,11 @@ function renderChat() {
         let html = '';
         for (let msg of messages) {
             const isOwn = (currentUser && msg.uid === currentUser.uid);
-            const timeStr = msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : 'только что';
+            const timeStr = msg.timestamp ? formatMessageDate(msg.timestamp) : 'только что';
             const senderName = msg.email ? escapeHtml(msg.email.split('@')[0]) : 'anon';
             const fullEmail = msg.email ? escapeHtml(msg.email) : '';
             
-            // Применяем парсинг BBCode к тексту сообщения
+            // BBCode parsing
             const parsedText = parseBBCode(msg.text);
             
             html += `
