@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Форматирование текста</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <link rel="icon" type="image/png" href="../favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../favicon/favicon.svg" />
+    <link rel="shortcut icon" href="../favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png" />
+
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <a href="settings.html"><h2>Обратно в настройки</h2></a>
+        </div>
+
+        <div class="messages-area">
+
+        <h2>Справка о форматировании:</h2>
+
+        <h3>Жирный: [b] *text* [/b]</h3>
+        <div class="own">
+            <div class="message-bubble">
+                <strong>Пример</strong>
+            </div>
+        </div>
+
+        <h3>Курсив: [i] *text* [/i]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <em>Пример</em>
+            </div>
+        </div>
+
+        <h3>Подчеркнутый: [u] *text* [/u]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <u>Пример</u>
+            </div>
+        </div>
+
+        <h3>Зачеркнутый: [s] *text* [/s]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <del>Пример</del>
+            </div>
+        </div>
+
+        <h3>Цвет: [color= *color* ] *text* [/color]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <span style="color: red;">Пример</span>
+            </div>
+        </div>
+
+        <h3>Размер: [size= *size*] *text* [/size]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <span style="font-size: 32px;">Пример</span>
+            </div>
+        </div>
+
+        <h3>Ссылка: [url] *link* [/url]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <a href="https://google.com" target="_blank" rel="noopener noreferrer">https://google.com</a>
+            </div>
+        </div>
+
+        <h3>Ссылка (с текстом): [url= *link*] *text* [/url]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <a href="https://google.com" target="_blank" rel="noopener noreferrer">Пример</a>
+            </div>
+        </div>
+
+        <h3>Изображение: [img] *image full link* [/img]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <img src="https://kuzbas.kovich33.ru/index.png" class="bb-image" loading="lazy" onclick="window.open(this.src)" alt="image">
+            </div>
+        </div>
+
+        <h3>Gif-анимация: [gif] *gif full link* [/gif]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyNnRrdGYycmFiZHFib3M3a3N3ZWJmangzY3I0Y3R0bmprYTg2dDNpdyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/11sBLVxNs7v6WA/giphy.gif" class="bb-gif" loading="lazy" alt="gif">
+            </div>
+        </div>
+
+        <h3>Видео (поддержка youtube, vimeo, прямых ссылок): [vid] *video link* [/vid]</h3><br>
+        <div class="own">
+            <div class="message-bubble">
+                <div></div>
+            </div>
+        </div>
+
+        </div>
+
+    </div>
+</body>
+</html>
