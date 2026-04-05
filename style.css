@@ -272,7 +272,9 @@ transform: translateY(0);
     background-color: rgb(255, 238, 80);
     color: black;
 }
-/* BBCode стили */
+
+
+/* bbcode */
 .bb-quote {
     background: #f0f0f0;
     border-left: 3px solid #4CAF50;
@@ -329,9 +331,6 @@ transform: translateY(0);
     border-color: #4CAF50;
 }
 
-
-
-/* bbcode */
 .message-bubble strong {
     font-weight: bold;
 }
@@ -356,6 +355,7 @@ transform: translateY(0);
 .message-bubble a:hover {
     text-decoration: underline;
 }
+
 
 /* Videoplayer */
 .video-container {
@@ -457,18 +457,18 @@ transform: translateY(0);
 }
 
 /* Mobile */
-@media (max-width: 480px) {
+@media (max-width: 1200px) {
     .video-play-button {
         width: 100px;
         height: 100px;
         font-size: 22px;
     }
-    
+
     .video-player-wrapper iframe,
     .video-player-wrapper video {
         min-height: 200px;
     }
-    
+
     .video-thumbnail {
         max-height: 200px;
     }
