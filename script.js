@@ -231,7 +231,7 @@ function renderChat() {
     appContainer.innerHTML = `
         <div class="chat-container">
             <div class="chat-header">
-                <a href="static/settings.html"><img src="static/settings-btn.svg" class="settings-btn"></a>
+                <a href="https://pivas.fun/static/settings"><img src="static/settings-btn.svg" class="settings-btn"></a>
                 <h2>Подпивасники</h2>
                 <div class="user-info">
                     <span class="status-badge"></span>
