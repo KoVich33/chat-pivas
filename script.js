@@ -22,6 +22,77 @@ let messagesListener = null;
 
 const appContainer = document.getElementById('app');
 
+const userStatusRef = database.ref('.info/connected');
+const onlineUsersRef = database.ref('onlineUsers');
+let userOnlineRef = null;
+let currentUserPresence = null;
+
+// online-status
+function setupPresence() {
+    if (!currentUser) return;
+    
+    // unique link creation
+    userOnlineRef = onlineUsersRef.child(currentUser.uid);
+    
+    // listen Firebase
+    userStatusRef.on('value', (snap) => {
+        if (snap.val() === true) {
+            // adding to list
+            const userData = {
+                email: currentUser.email,
+                displayName: currentUser.email.split('@')[0],
+                lastSeen: firebase.database.ServerValue.TIMESTAMP,
+                online: true
+            };
+            
+            userOnlineRef.set(userData);
+            
+            // delete on disconnect
+            userOnlineRef.onDisconnect().remove();
+            
+            // last activity update
+            if (currentUserPresence) clearInterval(currentUserPresence);
+            currentUserPresence = setInterval(() => {
+                if (userOnlineRef) {
+                    userOnlineRef.update({
+                        lastSeen: firebase.database.ServerValue.TIMESTAMP
+                    });
+                }
+            }, 30000);
+        }
+    });
+}
+
+// Get online users
+function getOnlineUsersCount() {
+    return new Promise((resolve) => {
+        onlineUsersRef.on('value', (snapshot) => {
+            let count = 0;
+            const users = [];
+            snapshot.forEach((childSnapshot) => {
+                const user = childSnapshot.val();
+                // online last 60 sec
+                const lastSeen = user.lastSeen || 0;
+                const now = Date.now();
+                const isActive = (now - lastSeen) < 60000; // 60 sec
+                
+                if (isActive) {
+                    count++;
+                    users.push({
+                        uid: childSnapshot.key,
+                        ...user
+                    });
+                } else {
+                    // remove offline
+                    onlineUsersRef.child(childSnapshot.key).remove();
+                }
+            });
+            resolve({ count, users });
+        });
+    });
+}
+
+
 // BBcode
 function escapeRegex(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -231,8 +302,13 @@ function renderChat() {
     appContainer.innerHTML = `
         <div class="chat-container">
             <div class="chat-header">
-                <a href="https://pivas.fun/static/settings"><img src="static/settings-btn.svg" class="settings-btn"></a>
+                <a href="static/settings.html"><img src="static/settings-btn.svg" class="settings-btn"></a>
                 <h2>Подпивасники</h2>
+                <div class="online-indicator" id="onlineIndicator">
+                    <!--<span class="online-dot"></span>--!>
+                    <span id="  "></span>
+                    <span>пользователи онлайн</span>
+                </div>
                 <div class="user-info">
                     <span class="status-badge"></span>
                     <span class="user-email" id="userEmailSpan">${escapeHtml(currentUser.email)}</span>
@@ -248,7 +324,69 @@ function renderChat() {
             </div>
         </div>
     `;
+
+    // online users
+    setupPresence();
     
+    // listen updates
+    onlineUsersRef.on('value', (snapshot) => {
+        let count = 0;
+        const now = Date.now();
+        
+        snapshot.forEach((childSnapshot) => {
+            const user = childSnapshot.val();
+            const lastSeen = user.lastSeen || 0;
+            // online last seen 30
+            if (now - lastSeen < 60000) {
+                count++;
+            } else {
+                // Delete offline
+                onlineUsersRef.child(childSnapshot.key).remove();
+            }
+        });
+    });
+
+    // OnlineList button
+    const onlineIndicator = document.getElementById('onlineIndicator');
+    if (onlineIndicator) {
+        onlineIndicator.style.cursor = 'pointer';
+        onlineIndicator.onclick = () => {
+            showOnlineUsersList();
+        };
+    }
+
+    async function showOnlineUsersList() {
+        const { count, users } = await getOnlineUsersCount();
+        
+        // render window
+        const modal = document.createElement('div');
+        modal.className = 'online-modal';
+        modal.innerHTML = `
+            <div class="online-modal-content">
+                <div class="online-modal-header">
+                    <h3>👥 Пользователи онлайн (${count})</h3>
+                    <button class="online-modal-close">✖</button>
+                </div>
+                <div class="online-modal-body">
+                    ${users.map(user => `
+                        <div class="online-user-item">
+                            <span class="online-user-status"></span>
+                            <span class="online-user-name">${escapeHtml(user.displayName || user.email.split('@')[0])}</span>
+                        </div>
+                    `).join('')}
+                    ${users.length === 0 ? '<div class="online-empty">Нет активных пользователей</div>' : ''}
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        modal.querySelector('.online-modal-close').onclick = () => modal.remove();
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.remove();
+        };
+    }
+
     const messagesContainer = document.getElementById('messagesArea');
     const messageInput = document.getElementById('messageInput');
     const sendBtn = document.getElementById('sendBtn');
@@ -290,7 +428,8 @@ function renderChat() {
             sendBtn.textContent = 'Отправить';
         }
     }
-    
+
+
     sendBtn.onclick = sendMessage;
     
     // message sending keybind
@@ -366,7 +505,19 @@ function renderChat() {
             messagesContainer.innerHTML = '<div style="text-align:center; color:#ff4444; padding:20px;">Ошибка подключения</div>';
         }
     });
+
+    const originalLogout = logoutBtn.onclick;
+    logoutBtn.onclick = async () => {
+        if (userOnlineRef) {
+            await userOnlineRef.remove();
+            if (currentUserPresence) clearInterval(currentUserPresence);
+        }
+        if (originalLogout) await originalLogout();
+        await auth.signOut();
+    };
+
 }
+
 
 // video
 function createVideoPreview(url) {
