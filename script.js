@@ -9,6 +9,9 @@ const firebaseConfig = {
     appId: "1:735154795152:web:4ab51b3d7c0d795469de15"
 };
 
+const Msg_in = new Audio("static/notifications/msg_in.mp3");
+const Msg_out = new Audio("static/notifications/msg_out.mp3");
+
 // inicialisation
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -427,6 +430,8 @@ function renderChat() {
             sendBtn.disabled = false;
             sendBtn.textContent = 'Отправить';
         }
+        //play sound
+        Msg_out.play();
     }
 
 
@@ -499,6 +504,9 @@ function renderChat() {
         }
         messagesContainer.innerHTML = html;
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        //play sound
+        Msg_in.play();
+
     }, (error) => {
         console.error('Database error:', error);
         if (messagesContainer) {
