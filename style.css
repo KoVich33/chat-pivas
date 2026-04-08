@@ -594,6 +594,7 @@ transform: translateY(0);
     color: white;
     margin: 0;
     font-size: 1.1rem;
+    font-family: "Ruslan Display", sans-serif;
 }
 
 .online-modal-close {
@@ -675,6 +676,7 @@ transform: translateY(0);
     
     .online-indicator {
         padding: 3px 10px;
+        padding-bottom: 8px;
         font-size: 0.7rem;
     }
 }
