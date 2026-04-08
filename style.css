@@ -294,7 +294,7 @@ transform: translateY(0);
     border-radius: 10px;
 }
 ::selection{
-    background-color: rgb(255, 238, 80);
+    background-color: rgb(153, 153, 153);
     color: black;
 }
 
