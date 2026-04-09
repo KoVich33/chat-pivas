@@ -431,7 +431,7 @@ function renderChat() {
             sendBtn.textContent = 'Отправить';
         }
         //play sound
-        Msg_out.play();
+        //Msg_out.play();
     }
 
 
@@ -505,7 +505,7 @@ function renderChat() {
         messagesContainer.innerHTML = html;
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
         //play sound
-        Msg_in.play();
+        //Msg_in.play();
 
     }, (error) => {
         console.error('Database error:', error);
