@@ -305,7 +305,7 @@ function renderChat() {
     appContainer.innerHTML = `
         <div class="chat-container">
             <div class="chat-header">
-                <a href="static/settings.html"><img src="static/settings-btn.svg" class="settings-btn"></a>
+                <a href="static/settings"><img src="static/settings-btn.svg" class="settings-btn"></a>
                 <h2>Подпивасники</h2>
                 <div class="online-indicator" id="onlineIndicator">
                     <!--<span class="online-dot"></span>--!>
